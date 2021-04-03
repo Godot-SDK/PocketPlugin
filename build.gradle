@@ -64,6 +64,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-    implementation (name:"mystring",ext:"aar")
+   // implementation (name:"mystring",ext:"aar")
+    //compileOnly (name:"godot-lib.debug",ext:"aar")
     implementation (name:"godot-lib.debug",ext:"aar")
 }
