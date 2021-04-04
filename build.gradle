@@ -50,6 +50,7 @@ android {
 }
 repositories
  {
+     maven { url 'https://jitpack.io' }
      flatDir
          {
              dirs 'libs'
@@ -64,7 +65,15 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-   // implementation (name:"mystring",ext:"aar")
     //compileOnly (name:"godot-lib.debug",ext:"aar")
     implementation (name:"godot-lib.debug",ext:"aar")
+    implementation(name: 'le_ad_2_1_3', ext: 'aar')
+    implementation (name:'le_base_2_1_3', ext:'aar')
+    implementation (name:'miit_mdid_1.0.10', ext:'aar')
+    implementation (name:'open_ad_sdk', ext:'aar')
+    //依赖
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.qq.e.union:union:4.294.1164'
+
 }
