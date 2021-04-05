@@ -3,3 +3,4 @@ build/
 .idea/
 proguard-rules.pro
 strfromtest.zip
+/.idea/

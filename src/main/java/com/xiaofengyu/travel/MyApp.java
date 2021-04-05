@@ -18,8 +18,9 @@ public class MyApp extends Application
         Log.i("MyApp","初始化sdk");
         LEConfig.setEnableLogger(false);
         //在这里加一个runOnUiThread线程试试
-        LESdk.initSDK("xiaomi", "10006");
-       // LESdk.setImageLoader(new GlideImageLoader());
+        LESdk.initSDK("xiaomi", "1");
+        LEADSdk.initSDK(this);
+        // LESdk.setImageLoader(new GlideImageLoader());
         // LEADSdk.initSDK(this);
         Log.i("MyApp","初始化执行完毕");
         //Toast.makeText(this, "初始化完毕", Toast.LENGTH_SHORT).show();
