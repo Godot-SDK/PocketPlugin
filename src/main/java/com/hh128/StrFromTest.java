@@ -198,8 +198,8 @@ public class StrFromTest extends GodotPlugin
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-               Intent i=new Intent(activity,pocked_plugin_banner.class);
-               activity.startActivity(i);
+               //Intent i=new Intent(activity,pocked_plugin_banner.class);
+              // activity.startActivity(i);
             }
         });
     }

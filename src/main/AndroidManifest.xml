@@ -8,10 +8,9 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application android:name="com.xiaofengyu.travel.MyApp">
-        <activity
-            android:name=".pocked_plugin_banner"
-            android:label="@string/title_activity_pocked_plugin_banner"
-            android:theme="@style/Theme.Strfromtest.NoActionBar"></activity>
+<!--        <activity-->
+<!--            android:name=".pocked_plugin_banner"-->
+<!--            android:label="@string/title_activity_pocked_plugin_banner"></activity>-->
 
         <meta-data
             android:name="org.godotengine.plugin.v1.StrFromTest"
