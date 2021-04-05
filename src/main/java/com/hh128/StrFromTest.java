@@ -42,6 +42,8 @@ public class StrFromTest extends GodotPlugin
     public List<String> getPluginMethods()
     {
         //return Arrays.asList(new String[]{"getStr"});
+        //ArrayList<String> a=new ArrayList<String>();
+        //a.add();
         return new ArrayList<String>()
         {
             {

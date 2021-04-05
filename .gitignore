@@ -1,3 +1,5 @@
 build/
 .gradle/
 .idea/
+proguard-rules.pro
+strfromtest.zip
