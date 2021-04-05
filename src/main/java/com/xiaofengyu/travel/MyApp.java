@@ -16,7 +16,7 @@ public class MyApp extends Application
     {
         super.onCreate();
         Log.i("MyApp","初始化sdk");
-        LEConfig.setEnableLogger(false);
+        LEConfig.setEnableLogger(true);
         //在这里加一个runOnUiThread线程试试
         LESdk.initSDK("xiaomi", "1");
         LEADSdk.initSDK(this);
