@@ -10,6 +10,8 @@ import com.zh.pocket.ads.banner.BannerAD;
 import com.zh.pocket.ads.fullscreen_video.FullscreenVideoAD;
 import com.zh.pocket.ads.fullscreen_video.FullscreenVideoADListener;
 
+import com.zh.pocket.ads.interstitial.InterstitialAD;
+import com.zh.pocket.ads.interstitial.InterstitialADListener;
 import com.zh.pocket.ads.reward_video.RewardVideoAD;
 import com.zh.pocket.ads.reward_video.RewardVideoADListener;
 import com.zh.pocket.base.bean.LEError;
@@ -20,6 +22,7 @@ import org.godotengine.godot.Godot;
 import org.godotengine.godot.plugin.GodotPlugin;
 import org.godotengine.godot.plugin.SignalInfo;
 
+import java.net.InterfaceAddress;
 import java.util.ArrayList;
 
 import java.util.HashSet;
@@ -31,10 +34,8 @@ public class PocketPlugin extends GodotPlugin
     //定义信号名字 信号链接是在godot链接的
     public  SignalInfo adReady = new SignalInfo("adReady");
     //public SignalInfo adFailed =new SignalInfo("adFailed");
-
     public  SignalInfo VideoClosed = new SignalInfo("VideoClosed");
     public  SignalInfo VideoReward = new SignalInfo("VideoReward");
-
     //public SignalInfo adSuccess =new SignalInfo("adSuccess");
     public  SignalInfo nativeAdSuccess =new SignalInfo("nativeAdSuccess");
     //public SignalInfo bannerAdFailed = new SignalInfo("bannerAdFailed");
@@ -87,7 +88,7 @@ public class PocketPlugin extends GodotPlugin
         ArrayList<String> plugin_methods=new ArrayList<String>();
         plugin_methods.add("getStr");
         plugin_methods.add("init");
-
+        plugin_methods.add("showInterAd");
         plugin_methods.add("showRewardVideoAd");
         plugin_methods.add("destroyRewardVideoAd");
 
@@ -95,7 +96,6 @@ public class PocketPlugin extends GodotPlugin
         //plugin_methods.add("destroyBannerAd");
         return plugin_methods;
     }
-
     //从依赖aar获取字符串
     public String getStr()
     {
@@ -105,7 +105,7 @@ public class PocketPlugin extends GodotPlugin
     //先用测试id
     public void init()
     {
-        //  LEConfig.setEnableLogger(true);
+        //  LEConfig.setEnableLogger(true);f
     }
     /**
      *展示激励视频广告
@@ -115,7 +115,12 @@ public class PocketPlugin extends GodotPlugin
         VideoAd.loadAD();
         //VideoAd.showAD();
     }
-
+    /*展示插屏广告*/
+    public void showInterAd()
+    {
+        InterstitialAD interad = new InterstitialAD(getActivity(),new PocketStaticAdL2());
+        interad.show();
+    }
     /**
      * 销毁激励视频广告
      */
@@ -196,6 +201,45 @@ public class PocketPlugin extends GodotPlugin
     {
         return "PocketPlugin";
     }
+    //静态广告回调
+    class PocketStaticAdL2 implements InterstitialADListener
+    {
+        @Override
+        public void onADReceive()
+        {
+
+        }
+
+        @Override
+        public void onADExposure()
+        {
+
+        }
+
+        @Override
+        public void onADClicked()
+        {
+            Log.i(this.getClass().toString(),"静态广告被点击");
+        }
+        @Override
+        public void onADClosed()
+        {
+            Log.i(this.getClass().toString(),"静态广告被关闭");
+        }
+
+        @Override
+        public void onSuccess()
+        {
+            Log.i(this.getClass().toString(),"静态广告打开成功");
+        }
+
+        @Override
+        public void onFailed(LEError leError)
+        {
+            Log.e(this.getClass().toString(),"静态广告播放失败");
+        }
+    }
+    //奖励广告回调
     class PocketRewardL2 implements RewardVideoADListener
     {
         //加载成功

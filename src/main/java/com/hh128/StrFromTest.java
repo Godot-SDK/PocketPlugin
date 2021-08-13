@@ -33,8 +33,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class StrFromTest extends GodotPlugin
-{
+public class StrFromTest //extends GodotPlugin
+{}/*
     public SignalInfo adReady = new SignalInfo("adReady");
     public SignalInfo adFailed =new SignalInfo("adFailed");
     public SignalInfo adSuccess =new SignalInfo("adSuccess");
@@ -274,4 +274,4 @@ public class StrFromTest extends GodotPlugin
     {
         return "StrFromTest";
     }
-}
+}*/
