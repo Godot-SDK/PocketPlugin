@@ -43,6 +43,9 @@ public class PocketPlugin extends GodotPlugin
     //静态插屏信号
     //public SignalInfo staticAdClosed = new SignalInfo("staticAdClosed");
     public SignalInfo staticAdFailed = new SignalInfo("staticAdFailed");
+    //全屏广告信号
+    public SignalInfo nativeAdClosed = new SignalInfo("nativeAdClosed");
+    public SignalInfo nativeAdFailed = new SignalInfo("nativeAdFailed");
     //public SignalInfo bannerAdFailed = new SignalInfo("bannerAdFailed");
 
     public RewardVideoAD VideoAd;
@@ -72,6 +75,8 @@ public class PocketPlugin extends GodotPlugin
         signals.add(VideoClosed);
         signals.add(VideoReward);
         signals.add(staticAdFailed);
+        signals.add(nativeAdClosed);
+        signals.add(nativeAdFailed);
         return signals;
     }
 
@@ -93,7 +98,7 @@ public class PocketPlugin extends GodotPlugin
         plugin_methods.add("showInterAd");
         plugin_methods.add("showRewardVideoAd");
         plugin_methods.add("destroyRewardVideoAd");
-
+        plugin_methods.add("showNativeAd");
         //plugin_methods.add("showBannerAd");
         //plugin_methods.add("destroyBannerAd");
         return plugin_methods;
@@ -142,23 +147,27 @@ public class PocketPlugin extends GodotPlugin
             }
 
             @Override
-            public void onVideoCached() {
+            public void onVideoCached()
+            {
+                Log.i("FullVideo","全屏视频缓存");
+            }
+
+            @Override
+            public void onADShow()
+            {
 
             }
 
             @Override
-            public void onADShow() {
+            public void onADExposure()
+            {
 
             }
 
             @Override
-            public void onADExposure() {
-
-            }
-
-            @Override
-            public void onADClicked() {
-
+            public void onADClicked()
+            {
+                Log.i("FullVideo","全屏视频被点击");
             }
 
             @Override
@@ -170,7 +179,8 @@ public class PocketPlugin extends GodotPlugin
             @Override
             public void onADClosed()
             {
-
+                Log.i("FullVideo","全屏视频被关闭");
+                emitSignal(nativeAdClosed.getName());
             }
 
             @Override
@@ -183,6 +193,7 @@ public class PocketPlugin extends GodotPlugin
             public void onError(LEError leError)
             {
                 Log.e("FullVideo",leError.getMessage());
+                emitSignal(nativeAdFailed.getName());
             }
             @Override
             public void onSkippedVideo()
