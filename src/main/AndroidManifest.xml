@@ -11,10 +11,9 @@
 <!--        <activity-->
 <!--            android:name=".pocked_plugin_banner"-->
 <!--            android:label="@string/title_activity_pocked_plugin_banner"></activity>-->
-
         <meta-data
-            android:name="org.godotengine.plugin.v1.StrFromTest"
-            android:value="com.hh128.StrFromTest" />
+            android:name="org.godotengine.plugin.v1.PocketPlugin"
+            android:value="com.hh128.PocketPlugin" />
     </application>
 
 </manifest>
