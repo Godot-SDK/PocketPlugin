@@ -5,10 +5,12 @@ import android.app.Activity;
 
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.qq.e.comm.constants.Sig;
 import com.zh.pocket.ads.banner.BannerAD;
+import com.zh.pocket.ads.banner.BannerADListener;
 import com.zh.pocket.ads.fullscreen_video.FullscreenVideoAD;
 import com.zh.pocket.ads.fullscreen_video.FullscreenVideoADListener;
 
@@ -99,7 +101,7 @@ public class PocketPlugin extends GodotPlugin
         plugin_methods.add("showRewardVideoAd");
         plugin_methods.add("destroyRewardVideoAd");
         plugin_methods.add("showNativeAd");
-        //plugin_methods.add("showBannerAd");
+        plugin_methods.add("showBannerAd");
         //plugin_methods.add("destroyBannerAd");
         return plugin_methods;
     }
@@ -127,6 +129,37 @@ public class PocketPlugin extends GodotPlugin
     {
         InterstitialAD interad = new InterstitialAD(getActivity(),new PocketStaticAdL2());
         interad.show();
+    }
+    /*banner广告*/
+    public void showBannerAd()
+    {
+      BannerAD ad= new BannerAD(getActivity(), new BannerADListener() {
+          @Override
+          public void onSuccess() {
+
+          }
+
+          @Override
+          public void onFailed(LEError leError) {
+
+          }
+
+          @Override
+          public void onADExposure() {
+
+          }
+
+          @Override
+          public void onADClicked() {
+
+          }
+
+          @Override
+          public void onADClosed() {
+
+          }
+      })  ;
+      ad.loadAD((ViewGroup)getActivity().getWindow().getDecorView());
     }
     /**
      * 销毁激励视频广告
