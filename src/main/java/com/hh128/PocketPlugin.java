@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+
+import com.qq.e.comm.constants.Sig;
 import com.zh.pocket.ads.banner.BannerAD;
 import com.zh.pocket.ads.fullscreen_video.FullscreenVideoAD;
 import com.zh.pocket.ads.fullscreen_video.FullscreenVideoADListener;
@@ -38,6 +40,9 @@ public class PocketPlugin extends GodotPlugin
     public  SignalInfo VideoReward = new SignalInfo("VideoReward");
     //public SignalInfo adSuccess =new SignalInfo("adSuccess");
     public  SignalInfo nativeAdSuccess =new SignalInfo("nativeAdSuccess");
+    //静态插屏信号
+    //public SignalInfo staticAdClosed = new SignalInfo("staticAdClosed");
+    public SignalInfo staticAdFailed = new SignalInfo("staticAdFailed");
     //public SignalInfo bannerAdFailed = new SignalInfo("bannerAdFailed");
 
     public RewardVideoAD VideoAd;
@@ -56,11 +61,7 @@ public class PocketPlugin extends GodotPlugin
         //plugin_godot=godot;
         Tag= PocketPlugin.class.toString();
     }
-    //新添加个自定义方法 用于发送信号
-    public void my_emitSignal(String signalName)
-    {
-        emitSignal(signalName);
-    }
+
     //添加信号
     @NonNull
     @Override
@@ -70,6 +71,7 @@ public class PocketPlugin extends GodotPlugin
         signals.add(adReady);
         signals.add(VideoClosed);
         signals.add(VideoReward);
+        signals.add(staticAdFailed);
         return signals;
     }
 
@@ -237,6 +239,7 @@ public class PocketPlugin extends GodotPlugin
         public void onFailed(LEError leError)
         {
             Log.e(this.getClass().toString(),"静态广告播放失败");
+            emitSignal(staticAdFailed.getName());
         }
     }
     //奖励广告回调

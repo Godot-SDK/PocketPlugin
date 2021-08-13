@@ -35,6 +35,11 @@ import java.util.Set;
 
 public class StrFromTest //extends GodotPlugin
 {}/*
+//新添加个自定义方法 用于发送信号
+    public void my_emitSignal(String signalName)
+    {
+        emitSignal(signalName);
+    }
     public SignalInfo adReady = new SignalInfo("adReady");
     public SignalInfo adFailed =new SignalInfo("adFailed");
     public SignalInfo adSuccess =new SignalInfo("adSuccess");
