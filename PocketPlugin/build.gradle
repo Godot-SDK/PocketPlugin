@@ -5,27 +5,29 @@ buildscript{
         jcenter()
 
         google()
-        /*  maven { url 'http://maven.aliyun.com/nexus/content/repositories/google' }
+          maven { url 'http://maven.aliyun.com/nexus/content/repositories/google' }
           maven { url 'http://maven.aliyun.com/nexus/content/repositories/gradle-plugin' }
           maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/' }
-          maven{ url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}*/
-        mavenCentral()
+          maven{ url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
+         mavenCentral()
     }
     dependencies{
+        //3.5.0
         classpath "com.android.tools.build:gradle:3.5.0"
     }
     allprojects {
         repositories {
+            google()
             jcenter()
             mavenCentral()
-            //   maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
-            //  maven{ url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
+               maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+              maven{ url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
         }
     }
 }
 android {
     compileSdkVersion 29
-    buildToolsVersion "30.0.3"
+    buildToolsVersion "30.0.3"//"30.0.3"
 
     defaultConfig {
         minSdkVersion 18
@@ -60,20 +62,23 @@ repositories
                         dirs 'libs'
                     }
             google()
-            // google()
         }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    // implementation 'com.android.support:appcompat-v7:28.0.0'
-    //implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'android.arch.navigation:navigation-fragment:1.0.0'
-    implementation 'android.arch.navigation:navigation-ui:1.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-
-
+    //compileOnly (name:"godot-lib.debug",ext:"aar")
+    compileOnly (name:"godot-lib.debug",ext:"aar")
+    implementation(name: 'le_ad_2_1_3', ext: 'aar')
+    implementation (name:'le_base_2_1_3', ext:'aar')
+    implementation (name:'miit_mdid_1.0.10', ext:'aar')
+    implementation (name:'open_ad_sdk', ext:'aar')
+    //依赖
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.qq.e.union:union:4.294.1164'
 }
