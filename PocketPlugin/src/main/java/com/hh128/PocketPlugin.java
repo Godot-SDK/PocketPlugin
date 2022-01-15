@@ -25,6 +25,7 @@ import androidx.annotation.NonNull;
 import org.godotengine.godot.Godot;
 import org.godotengine.godot.plugin.GodotPlugin;
 import org.godotengine.godot.plugin.SignalInfo;
+import org.godotengine.godot.plugin.UsedByGodot;
 
 import java.net.InterfaceAddress;
 import java.util.ArrayList;
@@ -130,7 +131,9 @@ public class PocketPlugin extends GodotPlugin
         InterstitialAD interad = new InterstitialAD(getActivity(),new PocketStaticAdL2());
         interad.show();
     }
+
     /*banner广告*/
+    @UsedByGodot
     public void showBannerAd()
     {
       BannerAD ad= new BannerAD(getActivity(), new BannerADListener() {

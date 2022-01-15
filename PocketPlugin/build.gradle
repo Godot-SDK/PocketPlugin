@@ -65,20 +65,26 @@ repositories
         }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
-    //implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
    // implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     /*testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'*/
-    //implementation(name:"godot-lib.debug",ext:"aar")
-    /*compileOnly (name:"godot-lib.debug",ext:"aar")
-    implementation(name: 'le_ad_2_1_3', ext: 'aar')
-    implementation (name:'le_base_2_1_3', ext:'aar')
-    implementation (name:'miit_mdid_1.0.10', ext:'aar')
-    implementation (name:'open_ad_sdk', ext:'aar')*/
-    //依赖
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.qq.e.union:union:4.294.1164'
+    //请替换这里的aar文件，要和目前你在用的引擎版本匹配
+    implementation(name:"godot-lib.3.3.3.stable.release",ext:"aar")
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
+    implementation(name: 'csj_ad_sdk_211014', ext: 'aar')
+    implementation(name: 'gdt_ad_sdk_210928', ext: 'aar')
+    implementation(name: 'ks_ad_sdk_211014', ext: 'aar')
+    implementation(name: 'pocket_ad_sdk_2.0.2', ext: 'aar')
+
+    implementation 'com.squareup.okhttp3:okhttp:4.9.2'
+    implementation 'com.google.code.gson:gson:2.8.8'
+    implementation 'androidx.legacy:legacy-support-core-ui:1.0.0'
+
+    /*testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'*/
 }
