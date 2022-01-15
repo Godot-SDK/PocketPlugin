@@ -7,8 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-
-import com.qq.e.comm.constants.Sig;
 import com.zh.pocket.ads.banner.BannerAD;
 import com.zh.pocket.ads.banner.BannerADListener;
 import com.zh.pocket.ads.fullscreen_video.FullscreenVideoAD;
@@ -18,7 +16,7 @@ import com.zh.pocket.ads.interstitial.InterstitialAD;
 import com.zh.pocket.ads.interstitial.InterstitialADListener;
 import com.zh.pocket.ads.reward_video.RewardVideoAD;
 import com.zh.pocket.ads.reward_video.RewardVideoADListener;
-import com.zh.pocket.base.bean.LEError;
+import com.zh.pocket.error.ADError;
 
 import androidx.annotation.NonNull;
 
@@ -63,8 +61,6 @@ public class PocketPlugin extends GodotPlugin
     {
         super(godot);
         activity=getActivity();
-        //暂时不用
-        //plugin_godot=godot;
         Tag= PocketPlugin.class.toString();
     }
 
@@ -82,136 +78,70 @@ public class PocketPlugin extends GodotPlugin
         signals.add(nativeAdFailed);
         return signals;
     }
-
     @Override
     public View onMainCreate(Activity activity)
     {
         this.layout=new FrameLayout(activity);
         return this.layout;
     }
-
-    @NonNull
-    @Override
-    public List<String> getPluginMethods()
-    {
-        //return Arrays.asList(new String[]{"getStr"});
-        ArrayList<String> plugin_methods=new ArrayList<String>();
-        plugin_methods.add("getStr");
-        plugin_methods.add("init");
-        plugin_methods.add("showInterAd");
-        plugin_methods.add("showRewardVideoAd");
-        plugin_methods.add("destroyRewardVideoAd");
-        plugin_methods.add("showNativeAd");
-        plugin_methods.add("showBannerAd");
-        //plugin_methods.add("destroyBannerAd");
-        return plugin_methods;
-    }
     //从依赖aar获取字符串
+    @UsedByGodot
     public String getStr()
     {
         return "PocketAd";
-        //  return MyString.mystring;
-    }
-    //先用测试id
-    public void init()
-    {
-        //  LEConfig.setEnableLogger(true);f
     }
     /**
      *展示激励视频广告
      */
+    @UsedByGodot
     public void showRewardVideoAd(){
-        VideoAd = new RewardVideoAD(getActivity(), new PocketRewardL2());
+        VideoAd = new RewardVideoAD(getActivity(), "");
+        VideoAd.setRewardVideoADListener(new PluginRewardVideoAdListener());
         VideoAd.loadAD();
         //VideoAd.showAD();
     }
     /*展示插屏广告*/
+    @UsedByGodot
     public void showInterAd()
     {
-        InterstitialAD interad = new InterstitialAD(getActivity(),new PocketStaticAdL2());
-        interad.show();
+        InterstitialAD interAd = new InterstitialAD(getActivity(),"");
+        interAd.setInterstitialADListener(new PluginInterADListener());
+        interAd.showAD();
     }
 
     /*banner广告*/
     @UsedByGodot
     public void showBannerAd()
     {
-      BannerAD ad= new BannerAD(getActivity(), new BannerADListener() {
-          @Override
-          public void onSuccess() {
-
-          }
-
-          @Override
-          public void onFailed(LEError leError) {
-
-          }
-
-          @Override
-          public void onADExposure() {
-
-          }
-
-          @Override
-          public void onADClicked() {
-
-          }
-
-          @Override
-          public void onADClosed() {
-
-          }
-      })  ;
-      ad.loadAD((ViewGroup)getActivity().getWindow().getDecorView());
+      BannerAD ad= new BannerAD(getActivity(), "");
+      ad.setBannerADListener(new PluginBannerLinstener());
+      //ad.loadAD((ViewGroup)getActivity().getWindow().getDecorView());
     }
     /**
      * 销毁激励视频广告
      */
-    public void destroyRewardVideoAd(){
+    @UsedByGodot
+    public void destroyRewardVideoAd()
+    {
         if (VideoAd != null){
             VideoAd.destroy();
         }
     }
     //全屏视频广告
+    @UsedByGodot
     public void showNativeAd()
     {
-        FullscreenVideoAD ad =new FullscreenVideoAD(getActivity(),new FullscreenVideoADListener(){
-            @Override
-            public void onADLoad()
-            {
-            Log.i("FullVideo","全屏视频加载");
-            }
-
-            @Override
-            public void onVideoCached()
+        FullscreenVideoAD ad =new FullscreenVideoAD(getActivity(),"");
+        ad.setFullscreenVideoADListener(new PLuginFullScreenADListener());
+          /*  public void onVideoCached()
             {
                 Log.i("FullVideo","全屏视频缓存");
             }
-
-            @Override
-            public void onADShow()
-            {
-
-            }
-
-            @Override
-            public void onADExposure()
-            {
-
-            }
-
             @Override
             public void onADClicked()
             {
                 Log.i("FullVideo","全屏视频被点击");
             }
-
-            @Override
-            public void onVideoComplete()
-            {
-
-            }
-
             @Override
             public void onADClosed()
             {
@@ -226,22 +156,11 @@ public class PocketPlugin extends GodotPlugin
             }
 
             @Override
-            public void onError(LEError leError)
+            public void onFailed(ADError adError)
             {
-                Log.e("FullVideo",leError.getMessage());
+                Log.e("广告播放失败",adError.toString());
                 emitSignal(nativeAdFailed.getName());
-            }
-            @Override
-            public void onSkippedVideo()
-            {
-                Log.i("FullVieo","跳过了视频");
-            }
-            @Override
-            public void onPreload()
-            {
-                Log.i("FullVideo","全屏视频预加载");
-            }
-        });
+        });*/
         ad.loadAD();
     }
     @NonNull
@@ -250,13 +169,43 @@ public class PocketPlugin extends GodotPlugin
     {
         return "PocketPlugin";
     }
+    class PluginBannerLinstener implements BannerADListener
+    {
+
+        @Override
+        public void onFailed(ADError adError) {
+
+        }
+
+        @Override
+        public void onADExposure() {
+
+        }
+
+        @Override
+        public void onADClicked() {
+
+        }
+
+        @Override
+        public void onADClosed() {
+
+        }
+
+        @Override
+        public void onSuccess() {
+
+        }
+    }
     //静态广告回调
-    class PocketStaticAdL2 implements InterstitialADListener
+    class PluginInterADListener implements InterstitialADListener
     {
         @Override
-        public void onADReceive()
+        public void onFailed(ADError adError)
         {
-
+            Log.e(this.getClass().toString(),"静态广告播放失败");
+            Log.e("静态广告播放失败",adError.toString());
+            emitSignal(staticAdFailed.getName());
         }
 
         @Override
@@ -283,32 +232,28 @@ public class PocketPlugin extends GodotPlugin
         }
 
         @Override
-        public void onFailed(LEError leError)
-        {
-            Log.e(this.getClass().toString(),"静态广告播放失败");
-            emitSignal(staticAdFailed.getName());
+        public void onADLoaded() {
+
         }
     }
     //奖励广告回调
-    class PocketRewardL2 implements RewardVideoADListener
+    class PluginRewardVideoAdListener implements RewardVideoADListener
     {
-        //加载成功
-        @Override
-        public void onADLoad() {
-        }
         //展示广告
         @Override
         public void onADShow() {
 
         }
+
+        @Override
+        public void onADExposure() {
+
+        }
+
         //素材缓存成功
         @Override
         public void onVideoCached() {
 
-        }
-        //广告出现
-        @Override
-        public void onADExpose() {
         }
         //当成功获得奖励
         @Override
@@ -338,16 +283,16 @@ public class PocketPlugin extends GodotPlugin
         }
 
         @Override
+        public void onFailed(ADError adError)
+        {
+            Log.e("RewardVideo","奖励视频播放失败");
+            Log.e("RewardVideo",adError.toString());
+        }
+
+        @Override
         public void onSuccess()
         {
 
-        }
-        //加载失败
-        @Override
-        public void onFailed(LEError leError)
-        {
-            Log.e("RewardVideo","奖励视频播放失败");
-            Log.e("RewardVideo",leError.getMessage());
         }
         //跳过广告
         @Override
@@ -355,11 +300,69 @@ public class PocketPlugin extends GodotPlugin
         {
             Log.i("ad","广告被跳过");
         }
-        //预加载
+
         @Override
-        public void onPreload()
+        public void onADLoaded()
         {
-            Log.i("RewardVideo","奖励视频预加载");
+
+        }
+    }
+    class PLuginFullScreenADListener implements FullscreenVideoADListener
+    {
+
+        @Override
+        public void onADLoaded() {
+
+        }
+
+        @Override
+        public void onVideoCached() {
+
+        }
+
+        @Override
+        public void onADShow() {
+
+        }
+
+        @Override
+        public void onADExposure() {
+
+        }
+
+        @Override
+        public void onADClicked() {
+
+        }
+
+        @Override
+        public void onVideoComplete() {
+
+        }
+
+        @Override
+        public void onADClosed() {
+
+        }
+
+        @Override
+        public void onSuccess() {
+
+        }
+
+        @Override
+        public void onFailed(ADError adError) {
+
+        }
+
+        @Override
+        public void onSkippedVideo() {
+
+        }
+
+        @Override
+        public void onPreload() {
+
         }
     }
 }
