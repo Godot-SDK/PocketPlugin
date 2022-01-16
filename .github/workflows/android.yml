@@ -2,9 +2,9 @@ name: Android CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master,PocketPlugin]
   pull_request:
-    branches: [ master ]
+    branches: [master,PocketPlugin]
 
 jobs:
   build:
@@ -20,4 +20,5 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew build
+      run: |
+         ./gradlew build
