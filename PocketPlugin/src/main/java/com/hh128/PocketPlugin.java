@@ -13,6 +13,7 @@ import com.zh.pocket.ads.fullscreen_video.FullscreenVideoADListener;
 
 import com.zh.pocket.ads.interstitial.InterstitialAD;
 import com.zh.pocket.ads.interstitial.InterstitialADListener;
+import com.zh.pocket.ads.nativ.NativeAD;
 import com.zh.pocket.ads.reward_video.RewardVideoAD;
 import com.zh.pocket.ads.reward_video.RewardVideoADListener;
 import com.zh.pocket.error.ADError;
@@ -137,11 +138,17 @@ public class PocketPlugin extends GodotPlugin
     @UsedByGodot
     public void showFullAd()
     {
-        FullscreenVideoAD ad =new FullscreenVideoAD(getActivity(),"");
+        FullscreenVideoAD ad = new FullscreenVideoAD(getActivity(),"");
         ad.setFullscreenVideoADListener(new PLuginFullScreenADListener());
         ad.loadAD();
     }
+    @UsedByGodot
+    public void showNativeAd(String id)
+    {
+       /* NativeAD nativeAD = new NativeAD(getActivity(),id);
+        nativeAD.loadAD();*/
 
+    }
     class PluginBannerLinstener implements BannerADListener
     {
 
@@ -283,7 +290,7 @@ public class PocketPlugin extends GodotPlugin
             Log.d("RewardVideo","激励视频加载了");
         }
     }
-    //todo 重构native的信号名
+    //完成
     class PLuginFullScreenADListener implements FullscreenVideoADListener
     {
 
