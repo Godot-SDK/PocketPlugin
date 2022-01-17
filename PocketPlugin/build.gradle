@@ -35,7 +35,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+       // testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
     }
 
@@ -79,7 +79,7 @@ dependencies {
     implementation(name: 'csj_ad_sdk_211014', ext: 'aar')
     implementation(name: 'gdt_ad_sdk_210928', ext: 'aar')
     implementation(name: 'ks_ad_sdk_211014', ext: 'aar')
-    implementation(name: 'pocket_ad_sdk_2.0.2', ext: 'aar')
+    implementation(name: 'pocket_ad_sdk_2.0.3', ext: 'aar')
 
     implementation 'com.squareup.okhttp3:okhttp:4.9.2'
     implementation 'com.google.code.gson:gson:2.8.8'
