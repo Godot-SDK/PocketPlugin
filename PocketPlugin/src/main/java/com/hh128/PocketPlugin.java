@@ -5,6 +5,7 @@ import android.app.Activity;
 
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import com.zh.pocket.ads.banner.BannerAD;
 import com.zh.pocket.ads.banner.BannerADListener;
@@ -14,6 +15,7 @@ import com.zh.pocket.ads.fullscreen_video.FullscreenVideoADListener;
 import com.zh.pocket.ads.interstitial.InterstitialAD;
 import com.zh.pocket.ads.interstitial.InterstitialADListener;
 import com.zh.pocket.ads.nativ.NativeAD;
+import com.zh.pocket.ads.nativ.NativeADListener;
 import com.zh.pocket.ads.reward_video.RewardVideoAD;
 import com.zh.pocket.ads.reward_video.RewardVideoADListener;
 import com.zh.pocket.error.ADError;
@@ -31,27 +33,35 @@ import java.util.Set;
 public class PocketPlugin extends GodotPlugin
 {
     //定义信号名字 信号链接是在godot链接的
-    public  SignalInfo adReady = new SignalInfo("adReady");
+    public SignalInfo adReady = new SignalInfo("adReady");
 
     //激励广告信号
-    public  SignalInfo RewardClosed = new SignalInfo("RewardClosed");
-    public  SignalInfo RewardGet = new SignalInfo("RewardGet");
+    public SignalInfo RewardGet    = new SignalInfo("RewardGet");
+    public SignalInfo RewardClosed = new SignalInfo("RewardClosed");
+    public SignalInfo RewardFailed = new SignalInfo("RewardFailed");
 
     //静态插屏信号
-    public SignalInfo InterAdClosed = new SignalInfo("InterAdClosed");
-    public SignalInfo InterAdFailed = new SignalInfo("InterAdFailed");
+    public SignalInfo InterAdSuccess = new SignalInfo("InterAdSuccess");
+    public SignalInfo InterAdClosed  = new SignalInfo("InterAdClosed");
+    public SignalInfo InterAdFailed  = new SignalInfo("InterAdFailed");
     //全屏广告信号
-    public  SignalInfo FullAdSuccess =new SignalInfo("FullAdSuccess");
-    public SignalInfo FullAdClosed = new SignalInfo("FullAdClosed");
-    public SignalInfo FullAdFailed = new SignalInfo("FullAdFailed");
+    public SignalInfo FullAdSuccess  = new SignalInfo("FullAdSuccess");
+    public SignalInfo FullAdClosed   = new SignalInfo("FullAdClosed");
+    public SignalInfo FullAdFailed   = new SignalInfo("FullAdFailed");
     //Banner广告信号
+    public SignalInfo BannerAdSuccess = new SignalInfo("BannerAdSuccess");
+    public SignalInfo BannerAdClosed = new SignalInfo("BannerAdClosed");
     public SignalInfo BannerAdFailed = new SignalInfo("BannerAdFailed");
+
+    //原生广告信号
+    public SignalInfo NativeAdClosed = new SignalInfo("NativeAdClosed");
+    public SignalInfo NativeAdFailed = new SignalInfo("NativeAdFailed");
 
     public FrameLayout layout;
     public Activity activity;
     public String Tag;
-    //插件自己的Godot
-    public  Godot plugin_godot;
+    //插件自己的Godot 暂不使用
+    public Godot plugin_godot;
     public PocketPlugin(Godot godot)
     {
         super(godot);
@@ -66,18 +76,32 @@ public class PocketPlugin extends GodotPlugin
     {
         return "PocketPlugin";
     }
-    //添加信号
+    //向引擎注册信号
     @NonNull
     @Override
     public Set<SignalInfo> getPluginSignals()
     {
         HashSet<SignalInfo> signals=new HashSet<SignalInfo>();
         signals.add(adReady);
-        signals.add(RewardClosed);
+        //Banner
+        signals.add(BannerAdSuccess);
+        signals.add(BannerAdClosed);
+        signals.add(BannerAdFailed);
+        //激励
         signals.add(RewardGet);
+        signals.add(RewardClosed);
+        signals.add(RewardFailed);
+        //插屏
+        signals.add(InterAdSuccess);
+        signals.add(InterAdClosed);
         signals.add(InterAdFailed);
+        //全屏
+        signals.add(FullAdSuccess);
         signals.add(FullAdClosed);
         signals.add(FullAdFailed);
+        //原生
+        signals.add(NativeAdClosed);
+        signals.add(NativeAdFailed);
         return signals;
     }
     @Override
@@ -112,6 +136,8 @@ public class PocketPlugin extends GodotPlugin
     }
     //todo
     /*banner广告*/
+    //此处需要单独创建一个子ViewGroup作为Godot Activity的子View，并且宽度最大，高度自适应，这样才能正确显示广告
+    //否则广告会把游戏的内容占满，影响体验 这里需要技术支持
     @UsedByGodot
     public void showBannerAd(String id)
     {
@@ -142,28 +168,37 @@ public class PocketPlugin extends GodotPlugin
         ad.setFullscreenVideoADListener(new PLuginFullScreenADListener());
         ad.loadAD();
     }
+    //已完成
     @UsedByGodot
     public void showNativeAd(String id)
     {
-       /* NativeAD nativeAD = new NativeAD(getActivity(),id);
-        nativeAD.loadAD();*/
+        ViewGroup vg = (ViewGroup) getActivity().getWindow().getDecorView();
+        NativeAD nativeAD = new NativeAD(getActivity(),id,vg);
+        nativeAD.setNativeADListener(new PluginNativeAdListener());
+        nativeAD.loadAD();
 
     }
     class PluginBannerLinstener implements BannerADListener
     {
 
         @Override
-        public void onFailed(ADError adError) {
-            Log.e("静态广告播放失败",adError.toString());
+        public void onFailed(ADError adError)
+        {
+            Log.e("BannerAd","静态广告播放失败");
+            Log.e("BannerAd",adError.toString());
+            emitSignal(BannerAdFailed.getName());
+
         }
 
         @Override
-        public void onADExposure() {
+        public void onADExposure()
+        {
             Log.d("BannerAd","Banner广告被曝光");
         }
 
         @Override
-        public void onADClicked() {
+        public void onADClicked()
+        {
             Log.d("BannerAd","Banner广告被点击");
         }
 
@@ -171,11 +206,13 @@ public class PocketPlugin extends GodotPlugin
         public void onADClosed()
         {
             Log.d("BannerAd","Banner广告被关闭");
+            emitSignal(BannerAdClosed.getName());
         }
 
         @Override
         public void onSuccess()
         {
+            emitSignal(BannerAdSuccess.getName());
             Log.d("BannerAd","Banner广告加载成功");
         }
     }
@@ -205,12 +242,14 @@ public class PocketPlugin extends GodotPlugin
         public void onADClosed()
         {
             Log.i(this.getClass().toString(),"静态广告被关闭");
+            emitSignal(InterAdClosed.getName());
         }
 
         @Override
         public void onSuccess()
         {
             Log.i(this.getClass().toString(),"静态广告打开成功");
+            emitSignal(InterAdSuccess.getName());
         }
 
         @Override
@@ -271,6 +310,7 @@ public class PocketPlugin extends GodotPlugin
         {
             Log.e("RewardVideo","奖励视频播放失败");
             Log.e("RewardVideo",adError.toString());
+            emitSignal(RewardFailed.getName());
         }
 
         @Override
@@ -358,6 +398,44 @@ public class PocketPlugin extends GodotPlugin
         public void onPreload()
         {
             Log.d("FullVideo","全屏广告预加载");
+        }
+    }
+
+    private class PluginNativeAdListener implements NativeADListener
+    {
+
+        @Override
+        public void onADLoaded()
+        {
+            Log.d("NativeAd","原生广告被加载");
+        }
+
+        @Override
+        public void onFailed(ADError adError)
+        {
+            Log.e("NativeAd","原生频播放失败");
+            Log.e("NativeAd",adError.toString());
+            emitSignal(NativeAdFailed.getName());
+        }
+
+        @Override
+        public void onADExposure()
+        {
+            Log.d("NativeAd","原生广告被曝光");
+        }
+
+        @Override
+        public void onADClicked()
+        {
+
+            Log.d("NativeAd","原生广告被点击");
+        }
+
+        @Override
+        public void onADClosed()
+        {
+            Log.d("NativeAd","原生广告被关闭");
+            emitSignal(NativeAdClosed.getName());
         }
     }
 }
