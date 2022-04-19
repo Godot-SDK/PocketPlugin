@@ -1,0 +1,2 @@
+configurations.maybeCreate("default")
+artifacts.add("default", file('pocket_ad_sdk_2.0.3.aar'))

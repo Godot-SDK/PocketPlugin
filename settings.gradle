@@ -1,1 +1,6 @@
+include ':pocket_ad_sdk_2.0.3'
+include ':ks_ad_sdk_211014'
+include ':gdt_ad_sdk_210928'
+include ':csj_ad_sdk_211014'
+include ':godot-lib'
 include ':PocketPlugin'

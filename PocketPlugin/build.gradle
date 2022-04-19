@@ -5,29 +5,29 @@ buildscript{
         //jcenter()
 
         google()
-        maven { url 'http://maven.aliyun.com/nexus/content/repositories/google' }
+        /*maven { url 'http://maven.aliyun.com/nexus/content/repositories/google' }
         maven { url 'http://maven.aliyun.com/nexus/content/repositories/gradle-plugin' }
         maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/' }
-        maven{ url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
+        maven{ url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}*/
         mavenCentral()
     }
     dependencies{
-        //3.5.0
-      //  classpath "com.android.tools.build:gradle:3.4.0"
+        //3.5.0 3.4.0
+        classpath "com.android.tools.build:gradle:4.1.2"
     }
     allprojects {
         repositories {
             google()
             //jcenter()
             mavenCentral()
-            maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
-            maven{ url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
+            /*maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+            maven{ url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}*/
         }
     }
 }
 android {
     compileSdkVersion 29
-    buildToolsVersion "30.0.3"//"30.0.3"
+    buildToolsVersion '29.0.2'//"30.0.3"
 
     defaultConfig {
         minSdkVersion 18
@@ -53,6 +53,10 @@ android {
 		checkReleaseBuilds false
         abortOnError false
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
 }
 repositories
@@ -65,22 +69,19 @@ repositories
             google()
         }
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
-   // implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    /*testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'*/
+
     //请替换这里的aar文件，要和目前你在用的引擎版本匹配
-    implementation(name:"godot-lib.3.3.3.stable.release",ext:"aar")
+    compileOnly project(":godot-lib")
+    //sdk
+    /*compileOnly project(':csj_ad_sdk_211014')
+    compileOnly project(':gdt_ad_sdk_210928')
+    compileOnly project(':ks_ad_sdk_211014')
+    compileOnly project(':pocket_ad_sdk_2.0.3')*/
+
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-
-    implementation(name: 'csj_ad_sdk_211014', ext: 'aar')
-    implementation(name: 'gdt_ad_sdk_210928', ext: 'aar')
-    implementation(name: 'ks_ad_sdk_211014', ext: 'aar')
-    implementation(name: 'pocket_ad_sdk_2.0.3', ext: 'aar')
-
+    //强制依赖
     implementation 'com.squareup.okhttp3:okhttp:4.9.2'
     implementation 'com.google.code.gson:gson:2.8.8'
     implementation 'androidx.legacy:legacy-support-core-ui:1.0.0'
