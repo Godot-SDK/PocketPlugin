@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
+import com.zh.pocket.PocketSdk;
 import com.zh.pocket.ads.banner.BannerAD;
 import com.zh.pocket.ads.banner.BannerADListener;
 import com.zh.pocket.ads.fullscreen_video.FullscreenVideoAD;
@@ -107,14 +109,8 @@ public class PocketPlugin extends GodotPlugin
     @Override
     public View onMainCreate(Activity activity)
     {
-        this.layout=new FrameLayout(activity);
+        this.layout = new FrameLayout(activity);
         return this.layout;
-    }
-    //获取字符串 测试用
-    @UsedByGodot
-    public String getStr()
-    {
-        return "PocketAd";
     }
     /**
      *展示激励视频广告
