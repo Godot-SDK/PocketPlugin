@@ -30,7 +30,7 @@ import org.godotengine.godot.plugin.UsedByGodot;
 
 import java.util.HashSet;
 import java.util.Set;
-
+//此行注释用于补充没有被git记录的问题
 public class PocketPlugin extends GodotPlugin
 {
     //定义信号名字 信号链接是在godot链接的

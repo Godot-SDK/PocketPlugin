@@ -1,11 +1,9 @@
 .gradle/
 .idea/
 PocketPlugin/build/
-/godot-lib.3.4.2/godot-lib.3.4.2.stable.release.aar
-/godot-lib.3.4.2/build/
-/csj_ad_sdk_220209/build/
-/gdt_ad_sdk_220209/build/
-/ks_ad_sdk_220209/build/
-/pocket_ad_sdk_2.8.0/build/
-/local.properties
-/PocketPlugin/src/main/java/com/littlesandbox/aa.java
+godot-lib.3.4.2/build/
+csj_ad_sdk_220209/build/
+gdt_ad_sdk_220209/build/
+ks_ad_sdk_220209/build/
+pocket_ad_sdk_2.8.0/build/
+local.properties
