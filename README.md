@@ -20,6 +20,13 @@
 </ol>
 
 ### 如何编译
-* 下载android studio
-* 配置环境 你可能需要openjdk-11来编译
-* 编译
+1. 下载godot-libxxx.aar
+2. 复制到godot-lib文件夹内，并重命名为godot-lib.aar
+3. 使用android studio编译或者下面的代码编译
+```
+//windows
+gradlew.bat PocketPlugin:build
+//linux
+./gradlew PocketPlugin:build
+```
+备注：你可能需要openjdk-11来编译（对于高版本godot）
