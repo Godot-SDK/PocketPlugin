@@ -1,9 +1,10 @@
 .gradle/
 .idea/
 PocketPlugin/build/
-godot-lib.3.4.2/build/
+godot-lib/build/
 csj_ad_sdk_220209/build/
 gdt_ad_sdk_220209/build/
 ks_ad_sdk_220209/build/
 pocket_ad_sdk_2.8.0/build/
 local.properties
+build/

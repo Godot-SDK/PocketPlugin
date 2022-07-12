@@ -71,7 +71,7 @@ repositories
 dependencies {
 
     //请替换这里的aar文件，要和目前你在用的引擎版本匹配
-    compileOnly project(":godot-lib.3.4.2")
+    compileOnly project(':godot-lib')
     //sdk
     compileOnly project(path: ':csj_ad_sdk_220209')
     compileOnly project(path: ':gdt_ad_sdk_220209')
